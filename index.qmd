@@ -1,0 +1,31 @@
+---
+title: "Moving the Gates"
+format: html
+---
+
+Alright, let's try to move the gates.
+
+```{r}
+library(flowWorkspace)
+library(ggcyto)
+library(Luciernaga)
+```
+
+```{r}
+SFC_GatingSet <- load_gs("data/BeadsGS.gs")
+```
+
+```{r}
+plot(SFC_GatingSet)
+```
+
+```{r}
+Singlets <- gs_pop_get_gate(SFC_GatingSet, "singlets")
+
+Hmm <- Singlets$`DTR_2023_ILT_00-Reference Group-4BeadsUnstained (Beads).1237095.fcs`
+Hmm@boundaries
+Hmm@parameters
+Hmm@filterId
+
+str(Singlets)
+```
