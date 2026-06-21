@@ -13,12 +13,29 @@ devtools::document("/home/david/Documents/flowGate")
 devtools::load_all("/home/david/Documents/flowGate")
 ```
 
+# Span Gate Attempt
+
+```{r}
+Beads <- list.files("/home/david/Documents/SDY3080/data/SDY3080/SingleColor_BeadReferences_00", full.names=TRUE, pattern=".fcs")
+SFC_cytoset <- load_cytoset_from_fcs(Beads,
+ truncate_max_range = FALSE, transformation = FALSE)
+SFC_GatingSet <- GatingSet(SFC_cytoset)
+
+flowGate::gs_gate_interactive(SFC_GatingSet, filterId = "scatter", dims=list("FSC-A", "SSC-A"), subset = "root")
+flowGate::gs_gate_interactive(SFC_GatingSet, filterId = "UV1_span", dims=list("UV1-A"), subset = "scatter")
+
+plot(SFC_GatingSet)
+
+gs_to_openCyto(gs=SFC_GatingSet, sample=1, outpath="/home/david/Desktop", filename = "Attempt2")
+```
+
+
 # Reload attempt
 
 ```{r}
 Beads <- list.files("/home/david/Documents/SDY3080/data/SDY3080/SingleColor_BeadReferences_00", full.names=TRUE, pattern=".fcs")
 
-OurGateTemplate <- "/home/david/Desktop/openCytoTemplate.csv"
+OurGateTemplate <- "/home/david/Desktop/Attempt2.csv"
 GatesToApply <- data.table::fread(OurGateTemplate)
 TheFullTemplate <- gatingTemplate(GatesToApply)
 ```
@@ -33,6 +50,8 @@ gt_gating(TheFullTemplate, SFC_GatingSet)
 
 ```{r}
 gs_apply_gate_check(gs=SFC_GatingSet[1:3], gate="scatter")
+gs_apply_gate_check(gs=SFC_GatingSet[1:3], gate="UV1_span")
+flowGate::gs_gate_interactive(SFC_GatingSet, filterId = "UV3_span", dims=list("UV3-A"), subset = "UV1_span")
 ```
 
 ```{r}
